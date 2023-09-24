@@ -65,7 +65,7 @@ export default function NewsPage() {
             </Stack>
             <NewsAdd openDia={open} onCloseDia={handleClose} />
 
-            <Stack
+            {/* <Stack
               direction="row"
               flexWrap="wrap-reverse"
               alignItems="center"
@@ -75,7 +75,7 @@ export default function NewsPage() {
               <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
                 <NewsSort />
               </Stack>
-            </Stack>
+            </Stack> */}
 
             <NewsList news={news} />
           </Container>

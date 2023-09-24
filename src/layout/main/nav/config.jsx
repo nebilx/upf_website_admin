@@ -37,6 +37,11 @@ const navConfig = [
     icon: icon("partner"),
   },
   {
+    title: "Job",
+    path: "/dashboard/job",
+    icon: icon("job"),
+  },
+  {
     title: "Forum",
     path: "/dashboard/forum",
     icon: icon("forum"),

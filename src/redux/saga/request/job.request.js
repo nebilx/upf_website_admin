@@ -1,44 +1,50 @@
-// import axios from "axios";
-// axios.defaults.baseURL = "https://upf-backend.onrender.com/";
-
 import axios from "./Axios.Config";
 
-export const requestsProduct = {
-  getAllProduct: () =>
+export const requestsJob = {
+  getAllJob: () =>
     axios.request({
       method: "get",
-      url: `/api/product`,
+      url: `/api/job/`,
     }),
-
-  getProduct: (id) =>
-    axios.request({
-      method: "get",
-      url: `/api/product/${id}`,
-    }),
-
-  addProduct: (data) =>
-    axios.request({
-      method: "post",
-      url: `/api/product`,
-      data,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }),
-
-  editProduct: (data) =>
-    axios.request({
-      method: "put",
-      url: `/api/product`,
-      data,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }),
-  deleteProduct: (data) =>
+  deleteJob: (data) =>
     axios.request({
       method: "delete",
-      url: `/api/product`,
+      url: `/api/job/`,
+      data,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
+
+  getAllJobP: () =>
+    axios.request({
+      method: "get",
+      url: `/api/job/career`,
+    }),
+
+  addJobP: (data) =>
+    axios.request({
+      method: "post",
+      url: `/api/job/career`,
+      data,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
+
+  editJobP: (data) =>
+    axios.request({
+      method: "put",
+      url: `/api/job/career`,
+      data,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),
+  deleteJobP: (data) =>
+    axios.request({
+      method: "delete",
+      url: `/api/job/career`,
       data,
       headers: {
         "Content-Type": "multipart/form-data",

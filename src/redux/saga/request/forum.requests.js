@@ -1,5 +1,4 @@
-import axios from "axios";
-axios.defaults.baseURL = "https://upf-backend.onrender.com";
+import axios from "./Axios.Config";
 
 export const requestsForum = {
   getAllForum: () =>

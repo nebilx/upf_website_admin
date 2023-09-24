@@ -7,11 +7,9 @@ import ProductList from "../section/product/ProductList";
 import ProductSort from "../section/product/ProductSort";
 import Iconify from "../components/iconify/Iconify";
 // mock
-import PRODUCTS from "../_mock/products";
 import ProductAdd from "../section/product/ProductAdd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { getAllProduct } from "../redux/store/slice/index.slice";
 
 // ----------------------------------------------------------------------
@@ -29,7 +27,6 @@ export default function ProductsPage() {
 
   const dispatch = useDispatch();
   const product = useSelector((state) => state.index.product);
-  // const navigate = useNavigate();
   const isLoading = useSelector((state) => state.index.isLoading);
 
   useEffect(() => {
@@ -68,7 +65,7 @@ export default function ProductsPage() {
             </Stack>
             <ProductAdd openDia={open} onCloseDia={handleClose} />
 
-            <Stack
+            {/* <Stack
               direction="row"
               flexWrap="wrap-reverse"
               alignItems="center"
@@ -78,7 +75,7 @@ export default function ProductsPage() {
               <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
                 <ProductSort />
               </Stack>
-            </Stack>
+            </Stack> */}
 
             <ProductList products={product} />
           </Container>

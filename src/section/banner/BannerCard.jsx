@@ -27,8 +27,9 @@ import { useNavigate } from "react-router-dom";
 const StyledProductImg = styled("img")({
   top: 0,
   width: "100%",
-  height: "100%",
-  objectFit: "cover",
+  height: "350px",
+  backgroundSize: "contain",
+  // objectFit: "contain",
   position: "absolute",
 });
 
@@ -103,7 +104,7 @@ export default function BannerCard({ banner }) {
           <span className="loader"></span>
         </div>
       ) : (
-        <Card sx={{ width: "100%", height: "300px" }}>
+        <Card sx={{ width: "100%", height: "400px" }}>
           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
             <Iconify icon={"eva:more-vertical-fill"} />
           </IconButton>

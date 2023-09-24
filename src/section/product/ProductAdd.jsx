@@ -52,7 +52,7 @@ export default function ProductAdd({ openDia, onCloseDia }) {
 
   const [Product, setProduct] = useState({
     name: "",
-    description: "",
+    // description: "",
     category: "",
     image: "",
     status: "false",
@@ -62,7 +62,7 @@ export default function ProductAdd({ openDia, onCloseDia }) {
 
   var ProductFormData = new FormData();
   ProductFormData.append("name", Product.name);
-  ProductFormData.append("description", Product.description);
+  // ProductFormData.append("description", Product.description);
   ProductFormData.append("category", Product.category);
   ProductFormData.append("p_image", Product.image);
   ProductFormData.append("status", Product.status);
@@ -96,7 +96,7 @@ export default function ProductAdd({ openDia, onCloseDia }) {
                   setProduct({ ...Product, name: e.target.value })
                 }
               />
-              <TextField
+              {/* <TextField
                 name="description"
                 label="Product Description"
                 required
@@ -105,7 +105,7 @@ export default function ProductAdd({ openDia, onCloseDia }) {
                 onChange={(e) =>
                   setProduct({ ...Product, description: e.target.value })
                 }
-              />
+              /> */}
               <TextField
                 name="category"
                 label="Product Category"

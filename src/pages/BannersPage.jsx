@@ -10,7 +10,6 @@ import BANNERS from "../_mock/banner";
 import BannerAdd from "../section/banner/BannerAdd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { getAllBanner } from "../redux/store/slice/index.slice";
 
 // ----------------------------------------------------------------------
@@ -65,7 +64,7 @@ export default function BannersPage() {
               </Button>
             </Stack>
             <BannerAdd openDia={open} onCloseDia={handleClose} />
-            <Stack
+            {/* <Stack
               direction="row"
               flexWrap="wrap-reverse"
               alignItems="center"
@@ -75,7 +74,7 @@ export default function BannersPage() {
               <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
                 <BannerSort />
               </Stack>
-            </Stack>
+            </Stack> */}
 
             <BannerList banners={banner} />
           </Container>

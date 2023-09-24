@@ -66,7 +66,7 @@ export default function CustomersPage() {
               </Button>
             </Stack>
             <CustomerAdd openDia={open} onCloseDia={handleClose} />
-            <Stack
+            {/* <Stack
               direction="row"
               flexWrap="wrap-reverse"
               alignItems="center"
@@ -76,7 +76,7 @@ export default function CustomersPage() {
               <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
                 <CustomerSort />
               </Stack>
-            </Stack>
+            </Stack> */}
 
             <CustomerList customers={customer} />
           </Container>

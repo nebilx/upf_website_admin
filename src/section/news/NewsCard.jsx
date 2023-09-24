@@ -31,8 +31,9 @@ const StyledProductImg = styled("img")({
   top: 0,
   width: "100%",
   height: "200px",
-  objectFit: "cover",
+  objectFit: "fill",
   position: "absolute",
+  borderRadius: "20px",
 });
 
 // ----------------------------------------------------------------------
@@ -106,12 +107,12 @@ export default function NewsCard({ dnews }) {
           <span className="loader"></span>
         </div>
       ) : (
-        <Card sx={{ height: "300px" }}>
+        <Card sx={{ height: "300px", width: "100%" }}>
           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
             <Iconify icon={"eva:more-vertical-fill"} />
           </IconButton>
 
-          <Box sx={{ display: "flex" }}>
+          <Box sx={{ display: "flex", marginLeft: "20px" }}>
             <Box
               sx={{
                 pt: "100%",

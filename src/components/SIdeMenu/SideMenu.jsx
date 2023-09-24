@@ -2,7 +2,7 @@ import { Menu } from "antd";
 
 import { BiNews } from "react-icons/bi";
 import { LiaProductHunt, LiaSignOutAltSolid } from "react-icons/lia";
-import { PiFlagBannerBold } from "react-icons/pi";
+import { PiFlagBannerBold, PiSuitcaseBold } from "react-icons/pi";
 import { RiCustomerService2Line } from "react-icons/ri";
 import { MdOutlineForum } from "react-icons/md";
 import { RxDashboard } from "react-icons/rx";
@@ -41,6 +41,7 @@ export default function SideMenu() {
             key: "/Customer",
             icon: <RiCustomerService2Line />,
           },
+          { label: "Job", key: "/Job", icon: <PiSuitcaseBold /> },
           { label: "Forum", key: "/Forum", icon: <MdOutlineForum /> },
           { label: "SignOut", key: "/SignOut", icon: <LiaSignOutAltSolid /> },
         ]}

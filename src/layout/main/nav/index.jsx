@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 // @mui
 import { styled, alpha } from "@mui/material/styles";
+import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Link,
@@ -11,6 +12,7 @@ import {
   Typography,
   Avatar,
   Stack,
+  ListItemIcon,
 } from "@mui/material";
 
 // hooks
@@ -24,7 +26,9 @@ import Scrollbar from "../../../components/scrollbar/Scrollbar";
 import NavSection from "../../../components/nav-section/NavSection";
 //
 import navConfig from "./config";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getLogout } from "../../../redux/store/slice/index.slice";
+import Iconify from "../../../components/iconify/Iconify";
 // ----------------------------------------------------------------------
 
 const NAV_WIDTH = 280;
@@ -37,6 +41,15 @@ const StyledAccount = styled("div")(({ theme }) => ({
   backgroundColor: alpha(theme.palette.grey[500], 0.12),
 }));
 
+export const StyledItemIcon = styled(ListItemIcon)({
+  width: 30,
+  height: 30,
+  color: "inherit",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+});
+
 // ----------------------------------------------------------------------
 
 Nav.propTypes = {
@@ -46,8 +59,12 @@ Nav.propTypes = {
 
 export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
-
+  const dispatch = useDispatch();
+  const navigator = useNavigate();
+  const isLoading = useSelector((state) => state.index.isLoading);
+  const message = useSelector((state) => state.index.message);
   const isDesktop = useResponsive("up", "lg");
+  const user = useSelector((state) => state.index.user);
 
   useEffect(() => {
     if (openNav) {
@@ -55,6 +72,17 @@ export default function Nav({ openNav, onCloseNav }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  useEffect(() => {
+    if (message !== "") {
+      navigator("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [message]);
+
+  const handleLogout = () => {
+    dispatch(getLogout());
+  };
 
   const renderContent = (
     <Scrollbar
@@ -74,16 +102,19 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box sx={{ mb: 4, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
-            <Avatar src={account.photoURL} alt="photoURL" />
+            {/* <Avatar src={account.photoURL} alt="photoURL" /> */}
 
+            <StyledItemIcon>
+              <Iconify icon="codicon:account" />
+            </StyledItemIcon>
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-                {account.displayName}
+                {user && user}
               </Typography>
 
-              <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              {/* <Typography variant="body2" sx={{ color: "text.secondary" }}>
                 {account.role}
-              </Typography>
+              </Typography> */}
             </Box>
           </StyledAccount>
         </Link>
@@ -91,7 +122,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
       <NavSection data={navConfig} />
 
-      <Box sx={{ flexGrow: 0.4 }} />
+      <Box sx={{ flexGrow: 0.3 }} />
 
       <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
         <Stack
@@ -99,13 +130,14 @@ export default function Nav({ openNav, onCloseNav }) {
           spacing={3}
           sx={{ pt: 5, borderRadius: 2, position: "relative" }}
         >
-          <Button
-            href="https://material-ui.com/store/items/minimal-dashboard/"
+          <LoadingButton
+            isLoading={isLoading}
+            onClick={handleLogout}
             target="_blank"
             variant="contained"
           >
             LogOut
-          </Button>
+          </LoadingButton>
         </Stack>
       </Box>
     </Scrollbar>

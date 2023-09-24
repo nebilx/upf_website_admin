@@ -5,11 +5,11 @@ import NewsCard from "./NewsCard";
 
 // ----------------------------------------------------------------------
 
-BannersList.propTypes = {
+NewsList.propTypes = {
   news: PropTypes.array.isRequired,
 };
 
-export default function BannersList({ news, ...other }) {
+export default function NewsList({ news, ...other }) {
   return (
     <Grid container spacing={5} flexDirection={"column"} {...other}>
       {news.map((dnews) => (

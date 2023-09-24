@@ -64,8 +64,9 @@ export default function LoginPage() {
               Sign in
             </Typography>
             <Box sx={{ flexGrow: 0.1 }} />
-
-            <LoginForm />
+            <StyledSection>
+              <LoginForm />
+            </StyledSection>
           </StyledContent>
         </Container>
       </StyledRoot>

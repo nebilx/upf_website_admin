@@ -1,4 +1,9 @@
-import { Navigate, useRoutes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+import { setMessage, setError } from "./redux/store/slice/index.slice";
+import PrivateRoute from "./PrivateRoutes";
 // layouts
 import Main_layout from "./layout/main/main_layout";
 import Simple_layout from "./layout/simple/simple_layout";
@@ -11,11 +16,7 @@ import NewsPage from "./pages/NewsPage";
 import CustomerPage from "./pages/CustomerPage";
 import ForumPage from "./pages/ForumPage";
 import DashboardAppPage from "./pages/DashboardPage";
-
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { setMessage, setError } from "./redux/store/slice/index.slice";
-import toast from "react-hot-toast";
+import JobPage from "./pages/JobPage";
 
 // ----------------------------------------------------------------------
 
@@ -35,37 +36,35 @@ export default function Router() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
-  const routes = useRoutes([
-    {
-      path: "/dashboard",
-      element: <Main_layout />,
-      children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: "app", element: <DashboardAppPage /> },
-        { path: "product", element: <ProductsPage /> },
-        { path: "banner", element: <BannersPage /> },
-        { path: "news", element: <NewsPage /> },
-        { path: "customer", element: <CustomerPage /> },
-        { path: "forum", element: <ForumPage /> },
-      ],
-    },
-    {
-      path: "login",
-      element: <LoginPage />,
-    },
-    {
-      element: <Simple_layout />,
-      children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: "404", element: <Page404 /> },
-        { path: "*", element: <Navigate to="/404" /> },
-      ],
-    },
-    {
-      path: "*",
-      element: <Navigate to="/404" replace />,
-    },
-  ]);
-
-  return routes;
+  return (
+    <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/dashboard" element={<Main_layout />}>
+        <Route index element={<Navigate to="app" />} />
+        <Route
+          path="app"
+          element={<PrivateRoute element={DashboardAppPage} />}
+        />
+        <Route
+          path="product"
+          element={<PrivateRoute element={ProductsPage} />}
+        />
+        <Route path="banner" element={<PrivateRoute element={BannersPage} />} />
+        <Route path="news" element={<PrivateRoute element={NewsPage} />} />
+        <Route
+          path="customer"
+          element={<PrivateRoute element={CustomerPage} />}
+        />
+        <Route path="forum" element={<PrivateRoute element={ForumPage} />} />
+        <Route path="job" element={<PrivateRoute element={JobPage} />} />
+      </Route>
+      <Route path="login" element={<LoginPage />} />
+      <Route element={<Simple_layout />}>
+        <Route index element={<Navigate to="/dashboard/app" />} />
+        <Route path="404" element={<Page404 />} />
+        <Route path="*" element={<Navigate to="/404" />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/404" replace />} />
+    </Routes>
+  );
 }

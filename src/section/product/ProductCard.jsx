@@ -34,7 +34,7 @@ const StyledProductImg = styled("img")({
   top: 0,
   width: "100%",
   height: "100%",
-  objectFit: "cover",
+  objectFit: "contain",
   position: "absolute",
 });
 
@@ -45,7 +45,7 @@ ProductCard.propTypes = {
 };
 
 export default function ProductCard({ product }) {
-  const { _id, name, description, image, category, status } = product;
+  const { _id, name, image, category, status } = product;
 
   const [open, setOpen] = useState(null);
 
@@ -145,7 +145,7 @@ export default function ProductCard({ product }) {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Typography variant="subtitle1">{description}</Typography>
+              {/* <Typography variant="subtitle1">{description}</Typography> */}
               <Typography variant="h6">{category}</Typography>
             </Stack>
           </Stack>
