@@ -149,25 +149,6 @@ export default function ForumList({ forum }) {
     setSelected([]);
   };
 
-  // const handleClick = (event, _id) => {
-  //   const selectedIndex = selected.indexOf(_id);
-  //   let newSelected = [];
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, _id);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1)
-  //     );
-  //   }
-  //   setSelected(newSelected);
-  //   setSelectedId(_id); // Set the selected `_id`
-  // };
-
   const handleClick = (event, _id) => {
     if (selectedId === _id) {
       setSelected([]);

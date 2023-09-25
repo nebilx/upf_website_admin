@@ -11,6 +11,7 @@ import BannerAdd from "../section/banner/BannerAdd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBanner } from "../redux/store/slice/index.slice";
+import Loading from "../components/Loader/Loading";
 
 // ----------------------------------------------------------------------
 
@@ -36,9 +37,7 @@ export default function BannersPage() {
   return (
     <>
       {isLoading ? (
-        <div className="ContainerLoader">
-          <span className="loader"></span>
-        </div>
+        <Loading />
       ) : (
         <>
           <Helmet>

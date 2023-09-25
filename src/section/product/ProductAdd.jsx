@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addProduct } from "../../redux/store/slice/index.slice";
+import Loading from "../../components/Loader/Loading";
 
 const VisuallyHiddenInput = styled("input")`
   clip: rect(0 0 0 0);
@@ -77,9 +78,7 @@ export default function ProductAdd({ openDia, onCloseDia }) {
   return (
     <>
       {isLoading ? (
-        <div className="ContainerLoader">
-          <span className="loader"></span>
-        </div>
+        <Loading />
       ) : (
         <Dialog open={openDia} onClose={onCloseDia}>
           <DialogTitle>Add Product</DialogTitle>

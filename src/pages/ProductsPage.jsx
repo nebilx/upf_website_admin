@@ -11,6 +11,7 @@ import ProductAdd from "../section/product/ProductAdd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProduct } from "../redux/store/slice/index.slice";
+import Loading from "../components/Loader/Loading";
 
 // ----------------------------------------------------------------------
 
@@ -36,9 +37,7 @@ export default function ProductsPage() {
   return (
     <>
       {isLoading ? (
-        <div className="ContainerLoader">
-          <span className="loader"></span>
-        </div>
+        <Loading />
       ) : (
         <>
           <Helmet>

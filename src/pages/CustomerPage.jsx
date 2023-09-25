@@ -12,6 +12,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getAllCustomer } from "../redux/store/slice/index.slice";
+import Loading from "../components/Loader/Loading";
 
 // ----------------------------------------------------------------------
 
@@ -38,9 +39,7 @@ export default function CustomersPage() {
   return (
     <>
       {isLoading ? (
-        <div className="ContainerLoader">
-          <span className="loader"></span>
-        </div>
+        <Loading />
       ) : (
         <>
           <Helmet>

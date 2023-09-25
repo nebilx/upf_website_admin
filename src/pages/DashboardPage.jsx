@@ -8,6 +8,7 @@ import AppWidgetSummary from "../section/dashboard/AppWidgetSummary";
 import { getDash } from "../redux/store/slice/index.slice";
 import { useDispatch, useSelector } from "react-redux";
 import Iconify from "../components/iconify/Iconify";
+import Loading from "../components/Loader/Loading";
 export default function DashboardAppPage() {
   const theme = useTheme();
 
@@ -22,9 +23,7 @@ export default function DashboardAppPage() {
   return (
     <>
       {isLoading ? (
-        <div className="ContainerLoader">
-          <span className="loader"></span>
-        </div>
+        <Loading />
       ) : (
         <>
           <Helmet>

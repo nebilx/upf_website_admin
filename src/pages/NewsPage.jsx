@@ -12,6 +12,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getAllNews } from "../redux/store/slice/index.slice";
+import Loading from "../components/Loader/Loading";
 
 export default function NewsPage() {
   const [open, setOpen] = React.useState(false);
@@ -36,9 +37,7 @@ export default function NewsPage() {
   return (
     <>
       {isLoading ? (
-        <div className="ContainerLoader">
-          <span className="loader"></span>
-        </div>
+        <Loading />
       ) : (
         <>
           <Helmet>

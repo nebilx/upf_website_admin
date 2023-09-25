@@ -9,7 +9,7 @@ import {
 import { LoadingButton } from "@mui/lab";
 // components
 import Iconify from "../../components/iconify/Iconify";
-
+import Loading from "../../components/Loader/Loading";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -48,9 +48,7 @@ export default function LoginForm() {
   return (
     <>
       {isLoading ? (
-        <div className="ContainerLoader">
-          <span className="loader"></span>
-        </div>
+        <Loading />
       ) : (
         <>
           <Stack spacing={3}>
@@ -86,7 +84,7 @@ export default function LoginForm() {
             />
           </Stack>
 
-          <Stack
+          {/* <Stack
             direction="row"
             alignItems="center"
             justifyContent="flex-end"
@@ -95,7 +93,7 @@ export default function LoginForm() {
             <Link variant="subtitle2" underline="hover">
               Forgot password?
             </Link>
-          </Stack>
+          </Stack> */}
 
           <LoadingButton
             fullWidth

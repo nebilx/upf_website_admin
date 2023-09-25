@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addNews } from "../../redux/store/slice/index.slice";
 import { DatePicker } from "@mui/x-date-pickers";
+import Loading from "../../components/Loader/Loading";
 
 const VisuallyHiddenInput = styled("input")`
   clip: rect(0 0 0 0);
@@ -80,9 +81,7 @@ export default function NewsAdd({ openDia, onCloseDia }) {
   return (
     <>
       {isLoading ? (
-        <div className="ContainerLoader">
-          <span className="loader"></span>
-        </div>
+        <Loading />
       ) : (
         <Dialog open={openDia} onClose={onCloseDia}>
           <DialogTitle>Add News</DialogTitle>

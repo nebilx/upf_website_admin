@@ -27,6 +27,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Loader/Loading";
 
 // ----------------------------------------------------------------------
 
@@ -106,9 +107,7 @@ export default function ProductCard({ product }) {
   return (
     <>
       {isLoading ? (
-        <div className="ContainerLoader">
-          <span className="loader"></span>
-        </div>
+        <Loading />
       ) : (
         <Card>
           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>

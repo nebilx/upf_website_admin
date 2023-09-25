@@ -21,6 +21,7 @@ import { deleteBanner, editBanner } from "../../redux/store/slice/index.slice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Loader/Loading";
 
 // ----------------------------------------------------------------------
 
@@ -100,9 +101,7 @@ export default function BannerCard({ banner }) {
   return (
     <>
       {isLoading ? (
-        <div className="ContainerLoader">
-          <span className="loader"></span>
-        </div>
+        <Loading />
       ) : (
         <Card sx={{ width: "100%", height: "400px" }}>
           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>

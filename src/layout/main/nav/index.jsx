@@ -99,7 +99,7 @@ export default function Nav({ openNav, onCloseNav }) {
         <Logo />
       </Box>
 
-      <Box sx={{ mb: 4, mx: 2.5 }}>
+      <Box sx={{ mb: 3, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
             {/* <Avatar src={account.photoURL} alt="photoURL" /> */}
@@ -122,9 +122,9 @@ export default function Nav({ openNav, onCloseNav }) {
 
       <NavSection data={navConfig} />
 
-      <Box sx={{ flexGrow: 0.3 }} />
+      {/* <Box sx={{ flexGrow: 0.3 }} /> */}
 
-      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+      <Box sx={{ px: 2.5, pb: 3 }}>
         <Stack
           alignItems="center"
           spacing={3}

@@ -24,6 +24,7 @@ import { deleteNews, editNews } from "../../redux/store/slice/index.slice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Loader/Loading";
 
 // ----------------------------------------------------------------------
 
@@ -103,9 +104,7 @@ export default function NewsCard({ dnews }) {
   return (
     <>
       {isLoading ? (
-        <div className="ContainerLoader">
-          <span className="loader"></span>
-        </div>
+        <Loading />
       ) : (
         <Card sx={{ height: "300px", width: "100%" }}>
           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>

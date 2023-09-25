@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ForumList from "../section/forum/ForumList";
+import Loading from "../components/Loader/Loading";
 // ----------------------------------------------------------------------
 
 export default function ForumPage() {
@@ -28,9 +29,7 @@ export default function ForumPage() {
   return (
     <>
       {isLoading ? (
-        <div className="ContainerLoader">
-          <span className="loader"></span>
-        </div>
+        <Loading />
       ) : (
         <>
           <Helmet>
