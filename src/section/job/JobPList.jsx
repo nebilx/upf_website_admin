@@ -93,6 +93,7 @@ export default function JobPList({ jobP }) {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [selectedId, setSelectedId] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
 
   const [showDialog, setShowDialog] = useState(false);
 
@@ -175,32 +176,15 @@ export default function JobPList({ jobP }) {
     setSelected([]);
   };
 
-  // const handleClick = (event, _id) => {
-  //   const selectedIndex = selected.indexOf(_id);
-  //   let newSelected = [];
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, _id);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1)
-  //     );
-  //   }
-  //   setSelected(newSelected);
-  //   setSelectedId(_id); // Set the selected `_id`
-  // };
-
-  const handleClick = (event, _id) => {
-    if (selectedId === _id) {
+  const handleClick = (event, _id, status) => {
+    if (selectedId === _id && selectedStatus === status) {
       setSelected([]);
+      setSelectedStatus(null);
       setSelectedId(null);
     } else {
-      setSelected([_id]);
+      setSelected([_id, status]);
       setSelectedId(_id);
+      setSelectedStatus(status);
     }
   };
 
@@ -299,7 +283,9 @@ export default function JobPList({ jobP }) {
                             <IconButton
                               size="large"
                               color="inherit"
-                              onClick={(event) => handleClick(event, _id)} // Pass _id as parameter
+                              onClick={(event) =>
+                                handleClick(event, _id, status)
+                              } // Pass _id as parameter
                             >
                               <Iconify icon={"icon-park-outline:checkbox"} />
                             </IconButton>
@@ -410,14 +396,15 @@ export default function JobPList({ jobP }) {
       <Dialog open={editDialogOpen} onClose={handleEditDialogClose}>
         <DialogTitle>Edit Confirmation</DialogTitle>
         <DialogContent>
-          Do you want to make it {status === "false" ? "public" : "private"}?
+          Do you want to make it{" "}
+          {selectedStatus === "false" ? "public" : "private"}?
         </DialogContent>
         <DialogActions>
           <Button onClick={handleEditDialogClose}>No</Button>
           <Button
             onClick={() =>
               handleEditConfirmation(
-                status === "true" ? "false" : "true",
+                selectedStatus === "true" ? "false" : "true",
                 selectedId
               )
             }
