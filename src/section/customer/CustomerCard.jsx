@@ -24,7 +24,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Loading from "../../components/Loader/Loading";
+import Loaders from "../../components/Loader/loader";
 // ----------------------------------------------------------------------
 
 const StyledProductImg = styled("img")({
@@ -103,7 +103,7 @@ export default function CustomerCard({ customer }) {
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <Loaders />
       ) : (
         <Card>
           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>

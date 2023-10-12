@@ -3,15 +3,13 @@ import { Helmet } from "react-helmet-async";
 import { Container, Stack, Typography, Button } from "@mui/material";
 // components
 import BannerList from "../section/banner/BannerList";
-import BannerSort from "../section/banner/BannerSort";
 import Iconify from "../components/iconify/Iconify";
 // mock
-import BANNERS from "../_mock/banner";
 import BannerAdd from "../section/banner/BannerAdd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBanner } from "../redux/store/slice/index.slice";
-import Loading from "../components/Loader/Loading";
+import Loaders from "../components/Loader/loader";
 
 // ----------------------------------------------------------------------
 
@@ -37,11 +35,11 @@ export default function BannersPage() {
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <Loaders />
       ) : (
         <>
           <Helmet>
-            <title> Universal Banner</title>
+            <title> Banner</title>
           </Helmet>
 
           <Container>

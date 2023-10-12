@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import JobList from "../section/job/JobList";
 import JobPList from "../section/job/JobPList";
 import { Container, Stack } from "@mui/material";
-import Loading from "../components/Loader/Loading";
+import Loaders from "../components/Loader/loader";
 
 export default function JobPage() {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ export default function JobPage() {
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <Loaders />
       ) : (
         <>
           <Helmet>

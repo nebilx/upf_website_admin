@@ -3,16 +3,13 @@ import { Helmet } from "react-helmet-async";
 import { Button, Container, Stack, Typography } from "@mui/material";
 // components
 import CustomerList from "../section/customer/CustomerList";
-import CustomerSort from "../section/customer/CustomerSort";
 import Iconify from "../components/iconify/Iconify";
 // mock
-import BANNERS from "../_mock/banner";
 import CustomerAdd from "../section/customer/CustomerAdd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { getAllCustomer } from "../redux/store/slice/index.slice";
-import Loading from "../components/Loader/Loading";
+import Loaders from "../components/Loader/loader";
 
 // ----------------------------------------------------------------------
 
@@ -39,11 +36,11 @@ export default function CustomersPage() {
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <Loaders />
       ) : (
         <>
           <Helmet>
-            <title> Universal Customer</title>
+            <title> Customer</title>
           </Helmet>
 
           <Container>

@@ -1,13 +1,60 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/assets/images/logo/upf_logo.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Universal Plastic Factory</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/assets/images/logo/upf_logo.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Universal Plastic Factory</title>
+
+  <script>
+    // Wait for the page to load
+    document.addEventListener('DOMContentLoaded', function () {
+      // Create a new <canvas> element
+      var canvas = document.createElement('canvas');
+      var context = canvas.getContext('2d');
+
+      // Create an image object for the favicon
+      var favicon = new Image();
+      favicon.src = "/assets/images/logo/upf_logo.png";
+
+      // When the favicon image is loaded
+      favicon.onload = function () {
+        // Set the canvas dimensions to match the favicon image
+        canvas.width = favicon.width;
+        canvas.height = favicon.height;
+
+        // Draw the favicon image on the canvas
+        context.drawImage(favicon, 0, 0, favicon.width, favicon.height);
+
+        // Get the image data from the canvas
+        var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        var data = imageData.data;
+
+        // Change the color of each pixel to white
+        for (var i = 0; i < data.length; i += 4) {
+          data[i] = 255;         // Red
+          data[i + 1] = 255;     // Green
+          data[i + 2] = 255;     // Blue
+          // To make the favicon fully opaque, uncomment the following line:
+          // data[i + 3] = 255;  // Alpha
+        }
+
+        // Put the modified image data back onto the canvas
+        context.putImageData(imageData, 0, 0);
+
+        // Replace the favicon with the modified image
+        var newFaviconHref = canvas.toDataURL('image/x-icon');
+        var link = document.querySelector("link[rel='icon']");
+        link.href = newFaviconHref;
+      };
+    });
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>

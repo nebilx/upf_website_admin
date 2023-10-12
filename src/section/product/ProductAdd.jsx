@@ -11,12 +11,12 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
-
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { addProduct } from "../../redux/store/slice/index.slice";
-import Loading from "../../components/Loader/Loading";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import Loaders from "../../components/Loader/loader";
 
 const VisuallyHiddenInput = styled("input")`
   clip: rect(0 0 0 0);
@@ -30,8 +30,6 @@ const VisuallyHiddenInput = styled("input")`
   width: 1px;
 `;
 
-// ----------------------------------------------------------------------
-
 ProductAdd.propTypes = {
   openDia: PropTypes.bool,
   onCloseDia: PropTypes.func,
@@ -39,118 +37,160 @@ ProductAdd.propTypes = {
 
 export default function ProductAdd({ openDia, onCloseDia }) {
   const { pathname } = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(openDia);
+  }, [openDia]);
 
   useEffect(() => {
     if (openDia) {
-      onCloseDia;
+      onCloseDia();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const dispatch = useDispatch();
-  const navigator = useNavigate();
   const isLoading = useSelector((state) => state.index.isLoading);
-
-  const [Product, setProduct] = useState({
-    name: "",
-    // description: "",
-    category: "",
-    image: "",
-    status: "false",
-  });
 
   const [Image, setImage] = useState(null);
 
-  var ProductFormData = new FormData();
-  ProductFormData.append("name", Product.name);
-  // ProductFormData.append("description", Product.description);
-  ProductFormData.append("category", Product.category);
-  ProductFormData.append("p_image", Product.image);
-  ProductFormData.append("status", Product.status);
+  // Validation schema using Yup
+  const validationSchema = Yup.object({
+    name: Yup.string()
+      .required("Product Name is required")
+      .min(3, "Product Name cannot below 3 characters ")
+      .max(20, "Product Name cannot exceed 20 characters"),
+    category: Yup.string()
+      .required("Product Category is required")
+      .min(3, "Product Name cannot below 3 characters ")
+      .max(20, "Product Category cannot exceed 20 characters"),
+    image: Yup.mixed()
+      .test(
+        "fileType",
+        "Invalid file type. Only image files are allowed.",
+        (value) => {
+          if (!value) return true; // No file provided is considered valid
+          return /(jpg|jpeg|png)$/.test(value.type);
+        }
+      )
+      .test(
+        "fileSize",
+        "File size is too large. Maximum size is 5MB.",
+        (value) => {
+          if (!value) return true; // No file provided is considered valid
+          return value.size < 5 * 1024 * 1024; // 5MB
+        }
+      ),
+  });
 
-  const message = useSelector((state) => state.index.message);
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      category: "",
+      image: null,
+      status: false,
+    },
+    validationSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        const ProductFormData = new FormData();
+        ProductFormData.append("name", values.name);
+        ProductFormData.append("category", values.category);
+        ProductFormData.append("p_image", values.image);
+        ProductFormData.append("status", values.status);
+
+        await dispatch(addProduct({ data: ProductFormData }));
+      } catch (error) {
+        console.error("Error submitting the form:", error);
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
 
   useEffect(() => {
-    if (message !== "") navigator("/dashboard/product");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [message]);
+    if (formik.values.image && !formik.errors.image) {
+      setImage(URL.createObjectURL(formik.values.image));
+    } else {
+      setImage(null);
+    }
+  }, [formik.values.image, formik.errors.image]);
 
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <Loaders />
       ) : (
-        <Dialog open={openDia} onClose={onCloseDia}>
+        <Dialog open={isOpen} onClose={onCloseDia}>
           <DialogTitle>Add Product</DialogTitle>
 
           <DialogContent>
-            <Stack spacing={2}>
-              <TextField
-                name="name"
-                label="Product Name"
-                required
-                size="20"
-                maxLength="20"
-                onChange={(e) =>
-                  setProduct({ ...Product, name: e.target.value })
-                }
-              />
-              {/* <TextField
-                name="description"
-                label="Product Description"
-                required
-                size="20"
-                maxLength="20"
-                onChange={(e) =>
-                  setProduct({ ...Product, description: e.target.value })
-                }
-              /> */}
-              <TextField
-                name="category"
-                label="Product Category"
-                required
-                size="20"
-                maxLength="20"
-                onChange={(e) =>
-                  setProduct({ ...Product, category: e.target.value })
-                }
-              />
-              <Button
-                component="label"
-                variant="contained"
-                href="#file-upload"
-                startIcon={<CloudUploadIcon />}
-              >
-                Upload Image
-                <VisuallyHiddenInput
-                  type="file"
+            <form onSubmit={formik.handleSubmit}>
+              <Stack spacing={2}>
+                <TextField
+                  name="name"
+                  label="Product Name"
                   required
-                  accept="image/*"
-                  onChange={(e) => {
-                    setProduct({ ...Product, image: e.target.files[0] });
-
-                    setImage(URL.createObjectURL(e.target.files[0]));
-                  }}
+                  size="20"
+                  maxLength="20"
+                  onChange={formik.handleChange}
+                  value={formik.values.name}
+                  error={formik.touched.name && Boolean(formik.errors.name)}
+                  helperText={formik.touched.name && formik.errors.name}
                 />
-              </Button>
+                <TextField
+                  name="category"
+                  label="Product Category"
+                  required
+                  size="20"
+                  maxLength="20"
+                  onChange={formik.handleChange}
+                  value={formik.values.category}
+                  error={
+                    formik.touched.category && Boolean(formik.errors.category)
+                  }
+                  helperText={formik.touched.category && formik.errors.category}
+                />
+                <Button
+                  component="label"
+                  variant="contained"
+                  href="#file-upload"
+                  startIcon={<CloudUploadIcon />}
+                >
+                  Upload Image
+                  <VisuallyHiddenInput
+                    type="file"
+                    required
+                    accept="image/*"
+                    error={formik.touched.image && Boolean(formik.errors.image)}
+                    onChange={(e) => {
+                      formik.setFieldValue("image", e.target.files[0]);
+                    }}
+                  />
+                </Button>
+                {formik.touched.image && formik.errors.image && (
+                  <p style={{ color: "red" }}>{formik.errors.image}</p>
+                )}
+                {Image && (
+                  <div>
+                    <h3>Selected Image:</h3>
+                    <img
+                      src={Image}
+                      alt="Selected"
+                      height="200px"
+                      width="200px"
+                      style={{ objectFit: "contain" }}
+                    />
+                  </div>
+                )}
 
-              {Image && (
-                <div>
-                  <h3>Selected Image:</h3>
-                  <img src={Image} alt="Selected" />
-                </div>
-              )}
-            </Stack>
+                <DialogActions>
+                  <Button type="submit">Add</Button>
+                </DialogActions>
+              </Stack>
+            </form>
           </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                dispatch(addProduct({ data: ProductFormData }));
-              }}
-            >
-              Add
-            </Button>
-          </DialogActions>
         </Dialog>
       )}
     </>

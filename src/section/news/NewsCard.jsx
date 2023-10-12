@@ -24,7 +24,7 @@ import { deleteNews, editNews } from "../../redux/store/slice/index.slice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Loading from "../../components/Loader/Loading";
+import Loaders from "../../components/Loader/loader";
 
 // ----------------------------------------------------------------------
 
@@ -32,9 +32,8 @@ const StyledProductImg = styled("img")({
   top: 0,
   width: "100%",
   height: "200px",
-  objectFit: "fill",
+  objectFit: "contain",
   position: "absolute",
-  borderRadius: "20px",
 });
 
 // ----------------------------------------------------------------------
@@ -104,7 +103,7 @@ export default function NewsCard({ dnews }) {
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <Loaders />
       ) : (
         <Card sx={{ height: "300px", width: "100%" }}>
           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
@@ -138,6 +137,10 @@ export default function NewsCard({ dnews }) {
             </Box>
 
             <Stack spacing={2} sx={{ p: 2 }}>
+              <Typography alignSelf="flex-end" variant="h6">
+                {p_date}
+              </Typography>
+
               <Link color="inherit" underline="hover">
                 <Typography variant="subtitle2" noWrap>
                   {name}
@@ -149,8 +152,7 @@ export default function NewsCard({ dnews }) {
                 alignItems="center"
                 justifyContent="space-between"
               >
-                <Typography variant="h6">{p_date}</Typography>
-                <Typography variant="subtitle1">{description}</Typography>
+                <Typography variant="subtitle2">{description}</Typography>
               </Stack>
             </Stack>
           </Box>

@@ -7,18 +7,14 @@ import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Link,
-  Button,
   Drawer,
   Typography,
-  Avatar,
   Stack,
   ListItemIcon,
 } from "@mui/material";
 
 // hooks
 import useResponsive from "../../../hooks/useResponsive";
-// mock
-import account from "../../../_mock/account";
 
 // components
 import Logo from "../../../components/logo/Logo";

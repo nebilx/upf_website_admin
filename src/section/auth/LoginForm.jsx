@@ -1,42 +1,28 @@
 // @mui
 import {
-  Link,
   Stack,
   IconButton,
+  Button,
   InputAdornment,
   TextField,
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
 // components
 import Iconify from "../../components/iconify/Iconify";
-import Loading from "../../components/Loader/Loading";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getLogin } from "../../redux/store/slice/index.slice";
+
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 // ---------------------------------------------------------------------
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
-    dispatch(getLogin({ data: AuthFormData }));
-  };
-
   const dispatch = useDispatch();
   const navigator = useNavigate();
-  const isLoading = useSelector((state) => state.index.isLoading);
-
-  const [Auth, setAuth] = useState({
-    email: "",
-    password: "",
-  });
-
-  var AuthFormData = new FormData();
-
-  AuthFormData.append("email", Auth.email);
-  AuthFormData.append("password", Auth.password);
 
   const message = useSelector((state) => state.index.message);
 
@@ -45,46 +31,87 @@ export default function LoginForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [message]);
 
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .required("Email address is required")
+      .email("Invalid email address"),
+    password: Yup.string().min(6).max(30).required("Password is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        var AuthFormData = new FormData();
+
+        AuthFormData.append("email", values.email);
+        AuthFormData.append("password", values.password);
+
+        dispatch(getLogin({ data: AuthFormData }));
+      } catch (error) {
+        console.error("Error submitting the form:", error);
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
+
   return (
     <>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <>
-          <Stack spacing={3}>
-            <TextField
-              name="email"
-              label="Email address"
-              required
-              onChange={(e) => setAuth({ ...Auth, email: e.target.value })}
-            />
+      <form onSubmit={formik.handleSubmit}>
+        <Stack spacing={5}>
+          <TextField
+            name="email"
+            label="Email address"
+            required
+            onChange={formik.handleChange}
+            value={formik.values.email}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+          />
 
-            <TextField
-              name="password"
-              label="Password"
-              required
-              onChange={(e) => setAuth({ ...Auth, password: e.target.value })}
-              type={showPassword ? "text" : "password"}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                    >
-                      <Iconify
-                        icon={
-                          showPassword ? "eva:eye-fill" : "eva:eye-off-fill"
-                        }
-                      />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Stack>
+          <TextField
+            name="password"
+            label="Password"
+            required
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            type={showPassword ? "text" : "password"}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    <Iconify
+                      icon={showPassword ? "eva:eye-fill" : "eva:eye-off-fill"}
+                    />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
 
-          {/* <Stack
+          <Button
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={formik.isSubmitting}
+          >
+            Login
+          </Button>
+        </Stack>
+      </form>
+
+      {/* <Stack
             direction="row"
             alignItems="center"
             justifyContent="flex-end"
@@ -94,18 +121,6 @@ export default function LoginForm() {
               Forgot password?
             </Link>
           </Stack> */}
-
-          <LoadingButton
-            fullWidth
-            size="large"
-            type="submit"
-            variant="contained"
-            onClick={handleClick}
-          >
-            Login
-          </LoadingButton>
-        </>
-      )}
     </>
   );
 }

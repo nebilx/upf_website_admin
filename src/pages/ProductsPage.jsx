@@ -4,14 +4,13 @@ import { Helmet } from "react-helmet-async";
 import { Button, Container, Stack, Typography } from "@mui/material";
 // components
 import ProductList from "../section/product/ProductList";
-import ProductSort from "../section/product/ProductSort";
 import Iconify from "../components/iconify/Iconify";
 // mock
 import ProductAdd from "../section/product/ProductAdd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProduct } from "../redux/store/slice/index.slice";
-import Loading from "../components/Loader/Loading";
+import Loaders from "../components/Loader/loader";
 
 // ----------------------------------------------------------------------
 
@@ -37,11 +36,11 @@ export default function ProductsPage() {
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <Loaders />
       ) : (
         <>
           <Helmet>
-            <title> Universal Products</title>
+            <title>Products</title>
           </Helmet>
 
           <Container>

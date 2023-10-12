@@ -13,9 +13,11 @@ import { useLocation } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { addCustomer } from "../../redux/store/slice/index.slice";
-import Loading from "../../components/Loader/Loading";
+
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import Loaders from "../../components/Loader/loader";
 
 const VisuallyHiddenInput = styled("input")`
   clip: rect(0 0 0 0);
@@ -38,83 +40,126 @@ CustomerAdd.propTypes = {
 
 export default function CustomerAdd({ openDia, onCloseDia }) {
   const { pathname } = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(openDia);
+  }, [openDia]);
 
   useEffect(() => {
     if (openDia) {
-      onCloseDia;
+      onCloseDia();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const dispatch = useDispatch();
-  const navigator = useNavigate();
-  const isLoading = useSelector((state) => state.index.isLoading);
 
-  const [Customer, setCustomer] = useState({
-    image: "",
-    status: "false",
-  });
+  const isLoading = useSelector((state) => state.index.isLoading);
 
   const [Image, setImage] = useState(null);
 
-  var CustomerFormData = new FormData();
+  const validationSchema = Yup.object({
+    image: Yup.mixed()
+      .test(
+        "fileType",
+        "Invalid file type. Only image files are allowed.",
+        (value) => {
+          if (!value) return true; // No file provided is considered valid
+          return /(jpg|jpeg|png)$/.test(value.type);
+        }
+      )
+      .test(
+        "fileSize",
+        "File size is too large. Maximum size is 5MB.",
+        (value) => {
+          if (!value) return true; // No file provided is considered valid
+          return value.size < 5 * 1024 * 1024; // 5MB
+        }
+      ),
+    status: Yup.boolean().required("Status is required"),
+  });
 
-  CustomerFormData.append("par_image", Customer.image);
-  CustomerFormData.append("status", Customer.status);
+  const formik = useFormik({
+    initialValues: {
+      image: "",
+      status: false,
+    },
+    validationSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        var CustomerFormData = new FormData();
 
-  const message = useSelector((state) => state.index.message);
+        CustomerFormData.append("par_image", values.image);
+        CustomerFormData.append("status", values.status);
+
+        await dispatch(addCustomer({ data: CustomerFormData }));
+      } catch (error) {
+        console.error("Error submitting the form:", error);
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
 
   useEffect(() => {
-    if (message !== "") navigator("/dashboard/customer");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [message]);
+    if (formik.values.image && !formik.errors.image) {
+      setImage(URL.createObjectURL(formik.values.image));
+    } else {
+      setImage(null);
+    }
+  }, [formik.values.image, formik.errors.image]);
 
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <Loaders />
       ) : (
-        <Dialog open={openDia} onClose={onCloseDia}>
+        <Dialog open={isOpen} onClose={onCloseDia}>
           <DialogTitle>Add Customer</DialogTitle>
 
           <DialogContent>
-            <Stack spacing={2}>
-              <Button
-                component="label"
-                variant="contained"
-                href="#file-upload"
-                startIcon={<CloudUploadIcon />}
-              >
-                Upload Image
-                <VisuallyHiddenInput
-                  type="file"
-                  required
-                  accept="image/*"
-                  onChange={(e) => {
-                    setCustomer({ ...Customer, image: e.target.files[0] });
+            <form onSubmit={formik.handleSubmit}>
+              <Stack spacing={2}>
+                <Button
+                  component="label"
+                  variant="contained"
+                  href="#file-upload"
+                  startIcon={<CloudUploadIcon />}
+                >
+                  Upload Image
+                  <VisuallyHiddenInput
+                    type="file"
+                    required
+                    accept="image/*"
+                    error={formik.touched.image && Boolean(formik.errors.image)}
+                    onChange={(e) => {
+                      formik.setFieldValue("image", e.target.files[0]);
+                    }}
+                  />
+                </Button>
+                {formik.touched.image && formik.errors.image && (
+                  <p style={{ color: "red" }}>{formik.errors.image}</p>
+                )}
+                {Image && (
+                  <div>
+                    <h3>Selected Image:</h3>
+                    <img
+                      src={Image}
+                      alt="Selected"
+                      height="200px"
+                      width="200px"
+                      style={{ objectFit: "contain" }}
+                    />
+                  </div>
+                )}
 
-                    setImage(URL.createObjectURL(e.target.files[0]));
-                  }}
-                />
-              </Button>
-
-              {Image && (
-                <div>
-                  <h3>Selected Image:</h3>
-                  <img src={Image} alt="Selected" />
-                </div>
-              )}
-            </Stack>
+                <DialogActions>
+                  <Button type="submit">Add</Button>
+                </DialogActions>
+              </Stack>
+            </form>
           </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                dispatch(addCustomer({ data: CustomerFormData }));
-              }}
-            >
-              Add
-            </Button>
-          </DialogActions>
         </Dialog>
       )}
     </>

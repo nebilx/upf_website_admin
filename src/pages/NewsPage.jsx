@@ -3,16 +3,13 @@ import { Helmet } from "react-helmet-async";
 import { Button, Container, Stack, Typography } from "@mui/material";
 // components
 import NewsList from "../section/news/NewsList";
-import NewsSort from "../section/news/NewsSort";
 import Iconify from "../components/iconify/Iconify";
-// mock
-import NEWS from "../_mock/news";
+
 import NewsAdd from "../section/news/NewsAdd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { getAllNews } from "../redux/store/slice/index.slice";
-import Loading from "../components/Loader/Loading";
+import Loaders from "../components/Loader/loader";
 
 export default function NewsPage() {
   const [open, setOpen] = React.useState(false);
@@ -37,11 +34,11 @@ export default function NewsPage() {
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <Loaders />
       ) : (
         <>
           <Helmet>
-            <title> Universal News</title>
+            <title> News</title>
           </Helmet>
 
           <Container>

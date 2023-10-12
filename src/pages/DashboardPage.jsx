@@ -1,21 +1,16 @@
 import { Helmet } from "react-helmet-async";
-import { faker } from "@faker-js/faker";
 // @mui
-import { useTheme } from "@mui/material/styles";
 import { Grid, Container, Typography, Button, Stack } from "@mui/material";
-import { useEffect } from "react";
+
 import AppWidgetSummary from "../section/dashboard/AppWidgetSummary";
 import { getDash } from "../redux/store/slice/index.slice";
 import { useDispatch, useSelector } from "react-redux";
 import Iconify from "../components/iconify/Iconify";
-import Loading from "../components/Loader/Loading";
+import Loaders from "../components/Loader/loader";
 export default function DashboardAppPage() {
-  const theme = useTheme();
-
   const dispatch = useDispatch();
   const dash = useSelector((state) => state.index.dash);
   const isLoading = useSelector((state) => state.index.isLoading);
-  console.log(dash);
   const handleDash = () => {
     dispatch(getDash());
   };
@@ -23,11 +18,11 @@ export default function DashboardAppPage() {
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <Loaders />
       ) : (
         <>
           <Helmet>
-            <title> Dashboard | Minimal UI </title>
+            <title> Dashboard </title>
           </Helmet>
 
           <Container maxWidth="xl">

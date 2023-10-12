@@ -13,9 +13,11 @@ import { useLocation } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { addJobP } from "../../redux/store/slice/index.slice";
-import Loading from "../../components/Loader/Loading";
+
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import Loaders from "../../components/Loader/loader";
 
 // ----------------------------------------------------------------------
 
@@ -26,64 +28,80 @@ JobPAdd.propTypes = {
 
 export default function JobPAdd({ openDia, onCloseDia }) {
   const { pathname } = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(openDia);
+  }, [openDia]);
 
   useEffect(() => {
     if (openDia) {
-      onCloseDia;
+      onCloseDia();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const dispatch = useDispatch();
-  const navigator = useNavigate();
+
   const isLoading = useSelector((state) => state.index.isLoading);
 
-  const [JobP, setJobP] = useState({
-    image: "",
-    status: "false",
+  const validationSchema = Yup.object({
+    name: Yup.string()
+      .required("Job Name is required")
+      .min(3, "Job Name cannot below 3 characters ")
+      .max(20, "Job Name cannot exceed 20 characters"),
   });
 
-  var BannerFormData = new FormData();
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      status: false,
+    },
+    validationSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        var JobPFormData = new FormData();
 
-  BannerFormData.append("name", JobP.name);
-  BannerFormData.append("status", JobP.status);
+        JobPFormData.append("name", values.name);
+        JobPFormData.append("status", values.status);
 
-  const message = useSelector((state) => state.index.message);
-
-  useEffect(() => {
-    if (message !== "") navigator("/dashboard/job");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [message]);
+        await dispatch(addJobP({ data: JobPFormData }));
+      } catch (error) {
+        console.error("Error submitting the form:", error);
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
 
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <Loaders />
       ) : (
-        <Dialog open={openDia} onClose={onCloseDia}>
+        <Dialog open={isOpen} onClose={onCloseDia}>
           <DialogTitle>Add Job Position</DialogTitle>
 
           <DialogContent>
-            <Stack spacing={2}>
-              <TextField
-                name="name"
-                label="Job Name"
-                required
-                size="20"
-                maxLength="20"
-                onChange={(e) => setJobP({ ...JobP, name: e.target.value })}
-              />
-            </Stack>
+            <form onSubmit={formik.handleSubmit}>
+              <Stack spacing={2}>
+                <TextField
+                  name="name"
+                  label="Job Name"
+                  required
+                  maxLength="20"
+                  onChange={formik.handleChange}
+                  value={formik.values.name}
+                  error={formik.touched.name && Boolean(formik.errors.name)}
+                  helperText={formik.touched.name && formik.errors.name}
+                />
+
+                <DialogActions>
+                  <Button type="submit">Add</Button>
+                </DialogActions>
+              </Stack>
+            </form>
           </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                dispatch(addJobP({ data: BannerFormData }));
-              }}
-            >
-              Add
-            </Button>
-          </DialogActions>
         </Dialog>
       )}
     </>

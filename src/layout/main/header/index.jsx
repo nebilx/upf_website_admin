@@ -56,7 +56,7 @@ export default function Header({ onOpenNav }) {
 
         <Box>
           <Typography variant="h3" color={"text.primary"}>
-            Universal Plastic Factory
+            Universal Plastic Factory Plc
           </Typography>
         </Box>
       </StyledToolbar>

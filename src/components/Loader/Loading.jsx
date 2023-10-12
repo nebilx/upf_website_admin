@@ -2,9 +2,9 @@ import "./Loading.css";
 export default function Loading() {
   return (
     <div className="loading-container">
-      <div className="loading">
-        <img src="/assets/images/logo/upf_logo.png" alt="Loading..." />
-      </div>
+      <span className="load"></span>
+
+      <h2 className="load-text"> Universal Plastic Factory Plc</h2>
     </div>
   );
 }

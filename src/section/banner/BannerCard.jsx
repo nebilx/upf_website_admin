@@ -21,7 +21,7 @@ import { deleteBanner, editBanner } from "../../redux/store/slice/index.slice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Loading from "../../components/Loader/Loading";
+import Loaders from "../../components/Loader/loader";
 
 // ----------------------------------------------------------------------
 
@@ -29,8 +29,7 @@ const StyledProductImg = styled("img")({
   top: 0,
   width: "100%",
   height: "350px",
-  backgroundSize: "contain",
-  // objectFit: "contain",
+  objectFit: "contain",
   position: "absolute",
 });
 
@@ -101,7 +100,7 @@ export default function BannerCard({ banner }) {
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <Loaders />
       ) : (
         <Card sx={{ width: "100%", height: "400px" }}>
           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>

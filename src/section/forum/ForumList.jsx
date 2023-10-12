@@ -232,7 +232,7 @@ export default function ForumList({ forum }) {
                               color="inherit"
                               onClick={(event) => handleClick(event, _id)} // Pass _id as parameter
                             >
-                              <Iconify icon={"ant-design:select-outlined"} />
+                              <Iconify icon={"icon-park-outline:checkbox"} />
                             </IconButton>
                           </TableCell>
 
