@@ -69,11 +69,11 @@ export default function NewsAdd({ openDia, onCloseDia }) {
     name: Yup.string()
       .required("News Name is required")
       .min(3, "News Name cannot below 3 characters ")
-      .max(20, "News Name cannot exceed 20 characters"),
+      .max(100, "News Name cannot exceed 100 characters"),
     description: Yup.string()
       .required("News Description is required")
       .min(3, "News Name cannot below 3 characters ")
-      .max(200, "News Description cannot exceed 200 characters"),
+      .max(500, "News Description cannot exceed 500 characters"),
     p_date: Yup.date()
       .required("News Date is required")
       .typeError("Valid date is required")
